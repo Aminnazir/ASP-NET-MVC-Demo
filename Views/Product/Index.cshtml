@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AspMVCDemo.Models.Product>
+
+@{
+    ViewBag.Title = "Product List";
+}
+
+<h2>Product List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>
+                    <button class="btn btn-info" onclick="loadProductDetails(@item.ProductId)">Details</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="productDetails"></div>
+
+@section scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function loadProductDetails(id) {
+            $.ajax({
+                url: '@Url.Action("GetProductDetails", "Product")',
+                data: { id: id },
+                success: function (data) {
+                    $('#productDetails').html(data);
+                }
+            });
+        }
+    </script>
+}
